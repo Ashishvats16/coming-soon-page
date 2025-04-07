@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-with-gloss">coming soon</h1>
+        
+        <div class="countdown-container">
+            <div class="countdown-timer">
+                <div class="timer-unit">
+                    <span class="timer-value" id="days">5</span>
+                    <span class="timer-label">days</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                    <span class="timer-value" id="hours">00</span>
+                    <span class="timer-label">hours</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                    <span class="timer-value" id="minutes">00</span>
+                    <span class="timer-label">minutes</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                    <span class="timer-value" id="seconds">00</span>
+                    <span class="timer-label">seconds</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Set the countdown date (5 days from now)
+        const countdownDate = new Date();
+        countdownDate.setDate(countdownDate.getDate() + 5);
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+            
+            // Calculate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Update display with animation
+            updateTimerValue('days', days);
+            updateTimerValue('hours', hours.toString().padStart(2, '0'));
+            updateTimerValue('minutes', minutes.toString().padStart(2, '0'));
+            updateTimerValue('seconds', seconds.toString().padStart(2, '0'));
+            
+            // Check if countdown is finished
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.querySelectorAll('.timer-value').forEach(el => {
+                    el.textContent = '00';
+                });
+            }
+        }
+        
+        function updateTimerValue(unit, value) {
+            const element = document.getElementById(unit);
+            const currentValue = element.textContent;
+            
+            if (currentValue !== value.toString()) {
+                // Add animation class
+                element.classList.add('timer-update');
+                
+                // Update value
+                setTimeout(() => {
+                    element.textContent = value;
+                    element.classList.remove('timer-update');
+                }, 300);
+            }
+        }
+        
+        // Initial call
+        updateCountdown();
+        
+        // Update the countdown every second
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
