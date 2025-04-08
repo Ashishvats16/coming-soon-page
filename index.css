@@ -74,7 +74,7 @@ body {
 
 /* New Countdown Timer Styles */
 .countdown-container {
-    margin-top: 3rem;
+    margin-top: 6rem;
     display: flex;
     justify-content: center;
 }

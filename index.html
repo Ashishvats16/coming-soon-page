@@ -39,9 +39,19 @@
     </div>
     
     <script>
-        // Set the countdown date (5 days from now)
-        const countdownDate = new Date();
-        countdownDate.setDate(countdownDate.getDate() + 5);
+        // Set the countdown date (only once, otherwise retrieve from localStorage)
+        let countdownDate;
+        
+        // Check if we already have a stored end date
+        if (localStorage.getItem('countdownEndDate')) {
+            countdownDate = new Date(parseInt(localStorage.getItem('countdownEndDate')));
+        } else {
+            // First visit - set countdown to 7 days from now
+            countdownDate = new Date();
+            countdownDate.setDate(countdownDate.getDate() + 7);
+            // Store the timestamp in localStorage
+            localStorage.setItem('countdownEndDate', countdownDate.getTime().toString());
+        }
         
         function updateCountdown() {
             const now = new Date().getTime();
