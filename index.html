@@ -16,42 +16,38 @@
         <div class="countdown-container">
             <div class="countdown-timer">
                 <div class="timer-unit">
-                    <span class="timer-value" id="days">5</span>
-                    <span class="timer-label">days</span>
+                    <span class="timer-value" id="days">2</span>
+                    <span class="timer-label">DAYS</span>
                 </div>
                 <span class="timer-separator">:</span>
                 <div class="timer-unit">
                     <span class="timer-value" id="hours">00</span>
-                    <span class="timer-label">hours</span>
+                    <span class="timer-label">HOURS</span>
                 </div>
                 <span class="timer-separator">:</span>
                 <div class="timer-unit">
                     <span class="timer-value" id="minutes">00</span>
-                    <span class="timer-label">minutes</span>
+                    <span class="timer-label">MINUTES</span>
                 </div>
                 <span class="timer-separator">:</span>
                 <div class="timer-unit">
                     <span class="timer-value" id="seconds">00</span>
-                    <span class="timer-label">seconds</span>
+                    <span class="timer-label">SECONDS</span>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Set the countdown date (only once, otherwise retrieve from localStorage)
-        let countdownDate;
+        // Clear any existing countdown date from localStorage
+        localStorage.removeItem('countdownEndDate');
         
-        // Check if we already have a stored end date
-        if (localStorage.getItem('countdownEndDate')) {
-            countdownDate = new Date(parseInt(localStorage.getItem('countdownEndDate')));
-        } else {
-            // First visit - set countdown to 7 days from now
-            countdownDate = new Date();
-            countdownDate.setDate(countdownDate.getDate() + 7);
-            // Store the timestamp in localStorage
-            localStorage.setItem('countdownEndDate', countdownDate.getTime().toString());
-        }
+        // Set the countdown date to 2 days from now
+        let countdownDate = new Date();
+        countdownDate.setDate(countdownDate.getDate() + 2);
+        
+        // Store the timestamp in localStorage
+        localStorage.setItem('countdownEndDate', countdownDate.getTime().toString());
         
         function updateCountdown() {
             const now = new Date().getTime();
@@ -64,10 +60,10 @@
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
             // Update display with animation
-            updateTimerValue('days', days);
-            updateTimerValue('hours', hours.toString().padStart(2, '0'));
-            updateTimerValue('minutes', minutes.toString().padStart(2, '0'));
-            updateTimerValue('seconds', seconds.toString().padStart(2, '0'));
+            updateTimerValue('days', Math.max(0, days));
+            updateTimerValue('hours', Math.max(0, hours).toString().padStart(2, '0'));
+            updateTimerValue('minutes', Math.max(0, minutes).toString().padStart(2, '0'));
+            updateTimerValue('seconds', Math.max(0, seconds).toString().padStart(2, '0'));
             
             // Check if countdown is finished
             if (distance < 0) {
@@ -75,6 +71,7 @@
                 document.querySelectorAll('.timer-value').forEach(el => {
                     el.textContent = '00';
                 });
+                document.getElementById('days').textContent = '0';
             }
         }
         
